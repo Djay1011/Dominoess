@@ -4,17 +4,16 @@
 #include <sstream>
 
 WorstCaseLine::WorstCaseLine(const std::string& startingDominoPath, const std::string& dominoCollectionPath) {
-    loadDominoes(startingDominoPath, true);
-    loadDominoes(dominoCollectionPath, false);
+    loadDominosFromFile(startingDominoPath, true);
+    loadDominosFromFile(dominoCollectionPath, false);
 }
 
-void WorstCaseLine::loadDominoes(const std::string& path, bool startingDomino) {
+void WorstCaseLine::loadDominosFromFile(const std::string& path, bool startingDomino) {
     std::ifstream file(path);
     if (!file) {
-        std::cerr << "Failed to open file: " << path << std::endl;
-        return;
+        throw std::runtime_error("Failed to open file: " + path);
     }
-    std::cout << "Reading file: " << path << std::endl; // Debug print
+    
     std::string line;
     while (getline(file, line)) {
         std::size_t delimiterPos = line.find(':');
@@ -29,13 +28,13 @@ void WorstCaseLine::loadDominoes(const std::string& path, bool startingDomino) {
         WorstCase domino(left, right);
 
         if (startingDomino) {
-            this->line.push_back(domino);
+            dominoSequence.push_back(domino);
             startingDomino = false;
         }
         else {
-            dominoMap[left].push_back(domino);
+            unmatchedDominos[left].push_back(domino);
             if (left != right) { // Avoid duplicating if both sides are equal
-                dominoMap[right].push_back(domino);
+                unmatchedDominos[right].push_back(domino);
             }
         }
     }
@@ -97,18 +96,14 @@ void WorstCaseLine::displayLine() const {
     std::cout << std::endl;
 }
 
-/**int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
     if (argc != 3) {
-        std::cerr << "Usage: " << argv[0] << " <starting_domino_file_path> <domino_collection_file_path>" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " <starting_domino_file> <domino_collection_file>" << std::endl;
         return 1;
     }
 
-    std::string startingDominoPath = argv[1];
-    std::string dominoCollectionPath = argv[2];
-
     try {
-        WorstCaseLine dominoLine(startingDominoPath, dominoCollectionPath);
-
+        WorstCaseLine dominoLine(argv[1], argv[2]);
         while (!dominoLine.isLineComplete()) {
             if (!dominoLine.addDominoToLeftOrRight()) {
                 std::cerr << "No matching domino found to add to the line." << std::endl;
@@ -116,9 +111,7 @@ void WorstCaseLine::displayLine() const {
             }
         }
 
-        std::cout << "Final Domino Line: " << std::endl;
         dominoLine.displayLine();
-
     }
     catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
@@ -126,4 +119,4 @@ void WorstCaseLine::displayLine() const {
     }
 
     return 0;
-}**/
+}

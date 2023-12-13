@@ -11,13 +11,13 @@
 
 class Domino {
 public:
-    std::string left;
-    std::string right;
+    std::string leftSide;
+    std::string rightSide;
 
-    Domino(std::string left, std::string right) : left(left), right(right) {}
+    Domino(std::string left, std::string right) : leftSide(std::move(left)), rightSide(std::move(right)) {}
 
     bool operator==(const Domino& other) const {
-        return left == other.left && right == other.right;
+        return leftSide == other.leftSide && rightSide == other.rightSide;
     }
 };
 
@@ -25,19 +25,19 @@ public:
 class DominoLine {
 private:
     std::list<Domino> line;
-    std::unordered_map<std::string, std::vector<Domino>> remainingDominoes;
+    std::unordered_map<std::string, std::vector<Domino>> availableDominoes;
 
 
 public:
     DominoLine(const std::string& startingDominoPath, const std::string& dominoCollectionPath);
 
-    bool addDominoToLeftOrRight();
+    bool addDomino();
     bool isLineComplete() const;
     void displayLine() const;
 
 private:
-    void loadDominoes(const std::string& path, bool startingDomino);
-    bool findAndAddMatchingDomino(const std::string& value, bool addToLeft);
+    void loadDominoesFromFile(const std::string& path, bool startingDomino);
+    bool findAndAddMatchingDomino(const std::string& matchingSide, bool addToLeft);
 };
 
 #endif // EFFICIENT_IMPLEMENTATION_H

@@ -1,5 +1,4 @@
 #pragma once
-
 #ifndef WORST_CASE_H
 #define WORST_CASE_H
 
@@ -12,7 +11,7 @@ public:
     std::string leftSide;
     std::string rightSide;
 
-    WorstCase(std::string left, std::string right) : leftSide(left)), rightSide(right)) {}
+    WorstCase(std::string left, std::string right) : leftSide(std::move(left)), rightSide(std::move(right)) {}
 };
 
 class WorstCaseLine {

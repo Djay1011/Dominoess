@@ -1,21 +1,14 @@
 #include <iostream>
-#include <sstream>
-#include <algorithm>
 #include <fstream>
 #include "VariantSolu.h"
 
 VariantSolu::VariantSolu(const std::string& startingDominoPath, const std::string& dominoCollectionPath) {
-    try {
-        loadDominoes(startingDominoPath, true);
-        loadDominoes(dominoCollectionPath, false);
-        buildLine();
-    }
-    catch (const std::exception& e) {
-        throw std::runtime_error(std::string("Error processing files: ") + e.what());
-    }
+    loadDominosFromFile(startingDominoPath, true);
+    loadDominosFromFile(dominoCollectionPath, false);
+    buildDominoLine();
 }
 
-void VariantSolu::loadDominoes(const std::string& path, bool isStartingDominoFile) {
+void VariantSolu::loadDominosFromFile(const std::string& path, bool isStartingDominoFile) {
     std::ifstream file(path);
     if (!file) {
         throw std::runtime_error("Failed to open file: " + path);
@@ -36,69 +29,69 @@ void VariantSolu::loadDominoes(const std::string& path, bool isStartingDominoFil
         std::string right = line.substr(delimiterPos + 1);
 
         if (isStartingDominoFile) {
-            startingBlueSymbol = left; // Starting domino's blue symbol
-            positionList.emplace_back(right, 0); // Add to List P
+            initialBlueSymbol = left; // Starting domino's blue symbol
+            positionTrackingList.emplace_back(right, 0); // Add to List P
             break;
         }
         else {
-            dominoData.emplace_back(left, right); // Add to List A
+            dominoPairs.emplace_back(left, right); // Add to List A
         }
     }
-    if (isStartingDominoFile && startingBlueSymbol.empty()) {
+    if (isStartingDominoFile && initialBlueSymbol.empty()) {
         throw std::runtime_error("No starting domino found in file: " + path);
     }
-    else if (!isStartingDominoFile && dominoData.empty()) {
+    else if (!isStartingDominoFile && dominoPairs.empty()) {
         throw std::runtime_error("No domino data found in file: " + path);
     }
 }
 
 
-void VariantSolu::buildLine() {
+void VariantSolu::buildDominoLine() {
     int distance = 1;
-    while (distance < static_cast<int>(dominoData.size())) {
-        std::list<std::pair<std::string, std::string>> listB = dominoData; // Copy of List A
+    while (distance < static_cast<int>(dominoPairs.size())) {
+        std::list<std::pair<std::string, std::string>> listB = dominoPairs; // Copy of List A
         std::list<std::pair<std::string, std::string>> listC;
 
-        dominoData.sort([](const auto& a, const auto& b) { return a.second < b.second; });
+        dominoPairs.sort([](const auto& a, const auto& b) { return a.second < b.second; });
         listB.sort([](const auto& a, const auto& b) { return a.first < b.first; });
-        positionList.sort([](const auto& a, const auto& b) { return a.first < b.first; });
+        positionTrackingList.sort([](const auto& a, const auto& b) { return a.first < b.first; });
 
-        auto itA = dominoData.begin();
+        auto itA = dominoPairs.begin();
         auto itB = listB.begin();
-        auto itP = positionList.begin();
+        auto itP = positionTrackingList.begin();
 
         while (itB != listB.end()) {
-            if (itA != dominoData.end() && itB->first == itA->second) {
+            if (itA != dominoPairs.end() && itB->first == itA->second) {
                 listC.emplace_back(itA->first, itB->second);
                 ++itA;
                 ++itB;
             }
-            else if (itP != positionList.end() && itB->first == itP->first) {
-                positionList.emplace_front(itB->second, itP->second + distance);
+            else if (itP != positionTrackingList.end() && itB->first == itP->first) {
+                positionTrackingList.emplace_front(itB->second, itP->second + distance);
                 ++itB;
                 ++itP;
             }
-            else if (itP != positionList.end() && itB->first > itP->first) {
+            else if (itP != positionTrackingList.end() && itB->first > itP->first) {
                 ++itP;
             }
-            else if (itA != dominoData.end() && itB->first > itA->second) {
+            else if (itA != dominoPairs.end() && itB->first > itA->second) {
                 ++itA;
             }
             else {
                 ++itB;
             }
         }
-        dominoData = listC;
+        dominoPairs = listC;
         distance *= 2;
     }
 
-    positionList.sort([](const auto& a, const auto& b) { return a.second < b.second; });
+    positionTrackingList.sort([](const auto& a, const auto& b) { return a.second < b.second; });
 }
 
 
 void VariantSolu::displayLine() const {
-    std::string blue = startingBlueSymbol;
-    for (const auto& pair : positionList) {
+    std::string blue = initialBlueSymbol;
+    for (const auto& pair : positionTrackingList) {
         std::cout << blue << "-" << pair.first << " ";
         blue = pair.first;
     }

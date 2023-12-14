@@ -42,13 +42,13 @@ void WorstCaseLine::loadDominosFromFile(const std::string& path, bool startingDo
 
 
 bool WorstCaseLine::addDominoToLeftOrRight() {
-    if (line.empty()) {
+    if (dominoSequence.empty()) {
         std::cerr << "No starting domino." << std::endl;
         return false;
     }
 
-    std::string leftValue = line.front().left;
-    std::string rightValue = line.back().right;
+    std::string leftValue = dominoSequence.front().leftSide;
+    std::string rightValue = dominoSequence.back().rightSide;
 
     if (findAndAddMatchingDomino(leftValue, true) || findAndAddMatchingDomino(rightValue, false)) {
         return true;
@@ -58,20 +58,20 @@ bool WorstCaseLine::addDominoToLeftOrRight() {
 }
 
 bool WorstCaseLine::findAndAddMatchingDomino(const std::string& value, bool addToLeft) {
-    auto it = dominoMap.find(value);
-    if (it != dominoMap.end()) {
+    auto it = unmatchedDominos.find(value);
+    if (it != unmatchedDominos.end()) {
         auto& dominoes = it->second;
         for (auto dominoIt = dominoes.begin(); dominoIt != dominoes.end(); ++dominoIt) {
-            if ((addToLeft && dominoIt->right == value) || (!addToLeft && dominoIt->left == value)) {
+            if ((addToLeft && dominoIt->rightSide == value) || (!addToLeft && dominoIt->leftSide == value)) {
                 if (addToLeft) {
-                    line.insert(line.begin(), *dominoIt);
+                    dominoSequence.insert(dominoSequence.begin(), *dominoIt);
                 }
                 else {
-                    line.push_back(*dominoIt);
+                    dominoSequence.push_back(*dominoIt);
                 }
                 dominoes.erase(dominoIt);
                 if (dominoes.empty()) {
-                    dominoMap.erase(it);
+                    unmatchedDominos.erase(it);
                 }
                 return true;
             }
@@ -81,7 +81,7 @@ bool WorstCaseLine::findAndAddMatchingDomino(const std::string& value, bool addT
 }
 
 bool WorstCaseLine::isLineComplete() const {
-    for (const auto& pair : dominoMap) {
+    for (const auto& pair : unmatchedDominos) {
         if (!pair.second.empty()) {
             return false;
         }
@@ -90,8 +90,8 @@ bool WorstCaseLine::isLineComplete() const {
 }
 
 void WorstCaseLine::displayLine() const {
-    for (const auto& domino : line) {
-        std::cout << domino.left << "-" << domino.right << " ";
+    for (const auto& domino : dominoSequence) {
+        std::cout << domino.leftSide << "-" << domino.rightSide << " ";
     }
     std::cout << std::endl;
 }
@@ -101,7 +101,6 @@ int main(int argc, char* argv[]) {
         std::cerr << "Usage: " << argv[0] << " <starting_domino_file> <domino_collection_file>" << std::endl;
         return 1;
     }
-
     try {
         WorstCaseLine dominoLine(argv[1], argv[2]);
         while (!dominoLine.isLineComplete()) {
@@ -110,13 +109,11 @@ int main(int argc, char* argv[]) {
                 break;
             }
         }
-
         dominoLine.displayLine();
     }
     catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
         return 1;
     }
-
     return 0;
 }

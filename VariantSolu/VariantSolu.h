@@ -15,12 +15,12 @@ public:
     void displayLine() const;
 
 private:
-    void loadDominoes(const std::string& path, bool isStartingDominoFile);
-    void buildLine();
+    void loadDominosFromFile(const std::string& path, bool isStartingDominoFile);
+    void buildDominoLine();
 
-    std::list<std::pair<std::string, std::string>> dominoData; // List A
-    std::list<std::pair<std::string, int>> positionList;       // List P
-    std::string startingBlueSymbol;
+    std::list<std::pair<std::string, std::string>> dominoPairs; // List A
+    std::list<std::pair<std::string, int>> positionTrackingList;       // List P
+    std::string initialBlueSymbol;
 };
 
 #endif // VARIANTSOLU_H

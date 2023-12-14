@@ -5,7 +5,7 @@
 VariantSolu::VariantSolu(const std::string& startingDominoPath, const std::string& dominoCollectionPath) {
     loadDominosFromFile(startingDominoPath, true);
     loadDominosFromFile(dominoCollectionPath, false);
-    buildDominoLine();
+    buildDominoLine(); 
 }
 
 void VariantSolu::loadDominosFromFile(const std::string& path, bool isStartingDominoFile) {

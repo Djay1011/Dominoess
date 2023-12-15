@@ -21,7 +21,7 @@ private:
 
 public:
     WorstCaseLine(const std::string& startingDominoPath, const std::string& dominoCollectionPath);
-    bool addDominoToLeftOrRight();
+    bool addDomino();
     bool isLineComplete() const;
     void displayLine() const;
 

@@ -41,7 +41,7 @@ void WorstCaseLine::loadDominosFromFile(const std::string& path, bool startingDo
 }
 
 
-bool WorstCaseLine::addDominoToLeftOrRight() {
+bool WorstCaseLine::addDomino() {
     if (dominoSequence.empty()) {
         std::cerr << "No starting domino." << std::endl;
         return false;
@@ -96,7 +96,7 @@ void WorstCaseLine::displayLine() const {
     std::cout << std::endl;
 }
 
-int main(int argc, char* argv[]) {
+/**int main(int argc, char* argv[]) {
     if (argc != 3) {
         std::cerr << "Usage: " << argv[0] << " <starting_domino_file> <domino_collection_file>" << std::endl;
         return 1;
@@ -104,7 +104,7 @@ int main(int argc, char* argv[]) {
     try {
         WorstCaseLine dominoLine(argv[1], argv[2]);
         while (!dominoLine.isLineComplete()) {
-            if (!dominoLine.addDominoToLeftOrRight()) {
+            if (!dominoLine.addDomino()) {
                 std::cerr << "No matching domino found to add to the line." << std::endl;
                 break;
             }
@@ -116,4 +116,4 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     return 0;
-}
+}*/

@@ -13,10 +13,10 @@ class VariantSolu
 public:
     VariantSolu(const std::string& startingDominoPath, const std::string& dominoCollectionPath);
     void displayLine() const;
-
+    void buildDominoLine();
 private:
     void loadDominosFromFile(const std::string& path, bool isStartingDominoFile);
-    void buildDominoLine();
+
 
     std::list<std::pair<std::string, std::string>> dominoPairs; // List A
     std::list<std::pair<std::string, int>> positionTrackingList;       // List P

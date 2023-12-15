@@ -109,7 +109,7 @@ void DominoLine::displayLine() const {
     std::cout << std::endl;
 }
 
-int main(int argc, char* argv[]) {
+/**int main(int argc, char* argv[]) {
     if (argc != 3) {
         std::cerr << "Usage: " << argv[0] << " <starting_domino_file_path> <domino_collection_file_path>" << std::endl;
         return 1;
@@ -142,4 +142,4 @@ int main(int argc, char* argv[]) {
     }
 
     return 0;
-}
+}*/

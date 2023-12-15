@@ -2,33 +2,64 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <iomanip>
 #include "EfficientImplementation.h"
 #include "WorstCase.h"
 
-template <typename DominoClass>
-double measurePerformance(const std::string & startingDominoPath, const std::string & dominoCollectionPath) {
+template <typename TaskClass>
+double measurePerformance(const std::string& startingDominoPath, const std::string& dominoCollectionPath) {
     auto start = std::chrono::high_resolution_clock::now();
-    DominoClass dominoInstance(startingDominoPath, dominoCollectionPath);
+
+    TaskClass task(startingDominoPath, dominoCollectionPath);
+    while (!task.isLineComplete()) {
+        if (!task.addDomino()) {
+            break;
+        }
+    }
+
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> elapsed = end - start;
     return elapsed.count();
 }
 
-int main() {
-    std::vector<std::string> startingDominoFiles = { "C:/Users/N1145251/Downloads/dominoes-test_data/dominoes-test_data/6K/6K-starting-domino.txt" };
-    std::vector<std::string> dominoCollectionFiles = { "C:/Users/N1145251/Downloads/dominoes-test_data/dominoes-test_data/6K/6K-input-uncoloured.txt" };
-    std::vector<std::pair<double, double>> results;
-    for (size_t i = 0; i < startingDominoFiles.size(); ++i) {
-        double timeTakenDominoLine = measurePerformance<DominoLine>(startingDominoFiles[i], dominoCollectionFiles[i]);
-        double timeTakenWorstCase = measurePerformance<WorstCase>(startingDominoFiles[i], dominoCollectionFiles[i]);
-        results.emplace_back(timeTakenDominoLine, timeTakenWorstCase);
+int main(int argc, char* argv[]) {
+    // Check if the correct number of arguments are provided
+    if (argc % 2 != 1 || argc < 3) {
+        std::cerr << "Usage: " << argv[0] << " <starting_domino_file1> <domino_collection_file1> [<starting_domino_file2> <domino_collection_file2> ...]" << std::endl;
+        return 1;
     }
 
-    std::cout << "DataSet\tDominoLine Time(ms)\tWorstCase Time(ms)\n";
-    for (size_t i = 0; i < results.size(); ++i) {
-        std::cout << "Data set " << i + 1 << ":\t" << results[i].first << "\t\t" << results[i].second << std::endl;
+    // Vectors to store file paths and results
+    std::vector<std::string> startingDominoFiles;
+    std::vector<std::string> dominoCollectionFiles;
+    std::vector<double> resultsB1, resultsB2;
+
+    // Parse command line arguments
+    for (int i = 1; i < argc; i += 2) {
+        startingDominoFiles.push_back(argv[i]);
+        dominoCollectionFiles.push_back(argv[i + 1]);
+    }
+
+    // Measure performance for each data set
+    for (size_t i = 0; i < startingDominoFiles.size(); ++i) {
+        double timeB1 = measurePerformance<DominoLine>(startingDominoFiles[i], dominoCollectionFiles[i]);
+        double timeB2 = measurePerformance<WorstCaseLine>(startingDominoFiles[i], dominoCollectionFiles[i]);
+
+        resultsB1.push_back(timeB1);
+        resultsB2.push_back(timeB2);
+
+        // Print table header
+        std::cout << std::left << std::setw(15) << "\nData Set"
+            << std::setw(20) << "Task B1 Time (ms)"
+            << std::setw(20) << "Task B2 Time (ms)" << std::endl;
+        std::cout << std::setfill('-') << std::setw(55) << "-" << std::endl; // Print a line for table separation
+        std::cout << std::setfill(' '); // Reset fill character to space
+
+        // Print each row of the table
+        std::cout << std::left << std::setw(15) << ("Data set " + std::to_string(i + 1))
+            << std::setw(20) << timeB1
+            << std::setw(20) << timeB2 << std::endl;
     }
 
     return 0;
-
 }

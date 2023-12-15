@@ -130,7 +130,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\VariantSolu.cpp" />
     <ClCompile Include="Task C3.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\header\VariantSolu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

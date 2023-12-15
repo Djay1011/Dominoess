@@ -27,8 +27,8 @@ PerformanceData testPerformance(const std::string& dominoPath) {
 }
 
 int main() {
-    std::vector<std::string> testCases = {/* List of test case file paths */ };
-    std::ofstream reportFile("performance_report.txt");
+    std::vector<std::string> testCases = {"C:/Users/n1145251/Downloads/dominoes-test_data/dominoes-test_data/example/example-starting-domino.txt" };
+    std::ofstream reportFile("C:/Users/n1145251/Downloads/dominoes-test_data/dominoes-test_data/example/example-input-uncoloured.txt");
 
     if (!reportFile) {
         std::cerr << "Failed to open performance_report.txt for writing.\n";

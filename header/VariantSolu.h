@@ -11,7 +11,7 @@
 class VariantSolu
 {
 public:
-    VariantSolu(const std::string& startingDominoPath, const std::string& dominoCollectionPath);
+    VariantSolu(const std::string& startingDominoPath, const std::string& dominoCollectionPath, bool buildImmediately = true);
     void displayLine() const;
     void buildDominoLine();
 private:

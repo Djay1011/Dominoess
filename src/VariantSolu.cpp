@@ -2,10 +2,13 @@
 #include <fstream>
 #include "VariantSolu.h"
 
-VariantSolu::VariantSolu(const std::string& startingDominoPath, const std::string& dominoCollectionPath) {
+
+VariantSolu::VariantSolu(const std::string& startingDominoPath, const std::string& dominoCollectionPath, bool buildImmediately) {
     loadDominosFromFile(startingDominoPath, true);
     loadDominosFromFile(dominoCollectionPath, false);
-    buildDominoLine();
+    if (buildImmediately) {
+        buildDominoLine();
+    }
 }
 
 void VariantSolu::loadDominosFromFile(const std::string& path, bool isStartingDominoFile) {

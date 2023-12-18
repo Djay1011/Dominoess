@@ -1,54 +1,38 @@
 #include <chrono>
 #include <iostream>
-#include <vector>
-#include <fstream>
-#include <VariantSolu.h>  // Make sure the path is correct
+#include <string>
+#include "VariantSolu.h"
 
-struct PerformanceData {
-    double loadTime;
-    double buildTime;
-};
-
-// This function measures the performance of the VariantSolu class
-PerformanceData testPerformance(const std::string& dominoPath) {
-    // Measure time taken to create VariantSolu object
+double measurePerformanceVariantSolu(const std::string& startingDominoPath, const std::string& dominoCollectionPath) {
     auto start = std::chrono::high_resolution_clock::now();
-    VariantSolu variantSolu(dominoPath, dominoPath);
+
+    try {
+        VariantSolu variantSolu(startingDominoPath, dominoCollectionPath);
+        variantSolu.displayLine(); // Assuming you want to display the line as well
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Exception occurred: " << e.what() << std::endl;
+        return -1.0; // Return a negative value to indicate failure
+    }
+
     auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double, std::milli> loadTime = end - start;
-
-    // Measure time taken to build the domino line
-    start = std::chrono::high_resolution_clock::now();
-    variantSolu.buildDominoLine();
-    end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double, std::milli> buildTime = end - start;
-
-    return { loadTime.count(), buildTime.count() };
+    std::chrono::duration<double, std::milli> elapsed = end - start;
+    return elapsed.count();
 }
 
-int main() {
-    std::vector<std::string> testCases = {"C:/Users/n1145251/Downloads/dominoes-test_data/dominoes-test_data/example/example-starting-domino.txt" };
-    std::ofstream reportFile("C:/Users/n1145251/Downloads/dominoes-test_data/dominoes-test_data/example/example-input-uncoloured.txt");
-
-    if (!reportFile) {
-        std::cerr << "Failed to open performance_report.txt for writing.\n";
+int main(int argc, char* argv[]) {
+    if (argc != 3) {
+        std::cerr << "Usage: " << argv[0] << " <starting_domino_file_path> <domino_collection_file_path>" << std::endl;
         return 1;
     }
 
-    reportFile << "Test Case, Load Time (ms), Build Time (ms)\n";
-
-    for (const auto& testCase : testCases) {
-        try {
-            PerformanceData performanceData = testPerformance(testCase);
-            double loadTime = performanceData.loadTime;
-            double buildTime = performanceData.buildTime;
-            reportFile << testCase << ", " << loadTime << ", " << buildTime << "\n";
-        }
-        catch (const std::exception& e) {
-            std::cerr << "Error processing test case " << testCase << ": " << e.what() << '\n';
-        }
+    double performanceTime = measurePerformanceVariantSolu(argv[1], argv[2]);
+    if (performanceTime >= 0.0) {
+        std::cout << "Performance Time: " << performanceTime << " ms" << std::endl;
+    }
+    else {
+        std::cout << "An error occurred during performance measurement." << std::endl;
     }
 
-    reportFile.close();
     return 0;
 }

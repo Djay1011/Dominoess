@@ -96,7 +96,7 @@ void WorstCaseLine::displayLine() const {
     std::cout << std::endl;
 }
 
-/**int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
     if (argc != 3) {
         std::cerr << "Usage: " << argv[0] << " <starting_domino_file> <domino_collection_file>" << std::endl;
         return 1;
@@ -116,4 +116,4 @@ void WorstCaseLine::displayLine() const {
         return 1;
     }
     return 0;
-}*/
+}

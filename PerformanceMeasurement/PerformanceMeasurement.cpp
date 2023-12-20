@@ -6,19 +6,20 @@
 #include "EfficientImplementation.h"
 #include "WorstCase.h"
 
+// Function to measure task performance.
 template <typename TaskClass>
 double measurePerformance(const std::string& startingDominoPath, const std::string& dominoCollectionPath) {
     auto start = std::chrono::high_resolution_clock::now();
 
-    TaskClass task(startingDominoPath, dominoCollectionPath);
-    while (!task.isLineComplete()) {
+    TaskClass task(startingDominoPath, dominoCollectionPath); // Instantiate the task.
+    while (!task.isLineComplete()) { // Keep looping until task is done.
         if (!task.addDomino()) {
-            break;
+            break; // Exit the loop if no more dominoes can be added.
         }
     }
 
     auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double, std::milli> elapsed = end - start;
+    std::chrono::duration<double, std::milli> elapsed = end - start;// Find the elapsed time in milliseconds.
     return elapsed.count();
 }
 

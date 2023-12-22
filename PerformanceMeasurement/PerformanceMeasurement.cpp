@@ -57,9 +57,11 @@ int main(int argc, char* argv[]) {
         std::cout << std::setfill(' '); // Reset fill character to space
 
         // Print each row of the table
-        std::cout << std::left << std::setw(15) << ("Data set " + std::to_string(i + 1))
-            << std::setw(20) << timeB1
-            << std::setw(20) << timeB2 << std::endl;
+        for (size_t i = 0; i < resultsB1.size(); ++i) {
+            std::cout << std::left << std::setw(15) << ("Data set " + std::to_string(i + 1))
+                << std::setw(20) << resultsB1[i]
+                << std::setw(20) << resultsB2[i] << std::endl;
+        }
     }
 
     return 0;

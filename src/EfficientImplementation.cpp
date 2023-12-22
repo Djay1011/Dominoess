@@ -52,7 +52,7 @@ bool DominoLine::addDomino() {
 
     // Check for no available dominoes and return false if none found.
     if (availableDominoes.empty()) {
-        std::cout << "No remaining dominoes to add." << std::endl;
+        std::cout << "No more dominoes to add." << std::endl;
         return false;
     }
 
@@ -61,7 +61,7 @@ bool DominoLine::addDomino() {
     std::string rightValue = line.back().rightSide;
 
     // Debug output with matched values.
-    std::cout << "Looking for a match for Left: " << leftValue << " and Right: " << rightValue << std::endl;  // Debug print
+    std::cout << "Seeking a suitable pairing for both Left: " << leftValue << " and Right: " << rightValue << std::endl;  // Debug print
 
     // Check and add to the left if a matching domino is found
     auto itLeft = availableDominoes.find(leftValue);
@@ -80,7 +80,7 @@ bool DominoLine::addDomino() {
     }
 
     // No match found.
-    std::cout << "No matching domino found for Left: " << leftValue << " or Right: " << rightValue << std::endl;
+    std::cout << "corresponding domino was located for the Left: " << leftValue << " or Right: " << rightValue << std::endl;
     return false;
 }
 
@@ -120,7 +120,7 @@ void DominoLine::displayLine() const {
     std::cout << std::endl;
 }
 
-int main(int argc, char* argv[]) {
+/*int main(int argc, char* argv[]) {
     if (argc != 3) {
         std::cerr << "Usage: " << argv[0] << " <starting_domino_file_path> <domino_collection_file_path>" << std::endl;
         return 1; // Return with error code if incorrect argument.
@@ -138,7 +138,7 @@ int main(int argc, char* argv[]) {
         do {
             addedNewDomino = dominoLine.addDomino();
             if (addedNewDomino) {
-                std::cout << "Added a new domino to the line." << std::endl;
+                std::cout << "New domino added to line. \n" << std::endl;
             }
         } while (addedNewDomino);
 
@@ -148,7 +148,7 @@ int main(int argc, char* argv[]) {
         }
 
         // Show the final domino line.
-        std::cout << "Final Domino Line: " << std::endl;
+        std::cout << "\nFinal Domino Line: " << std::endl;
         dominoLine.displayLine();
     }
     catch (const std::exception& e) {
@@ -157,4 +157,4 @@ int main(int argc, char* argv[]) {
     }
 
     return 0;
-}
+}*/

@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
 
     double performanceTime = measurePerformanceVariantSolu(argv[1], argv[2]);
     if (performanceTime >= 0.0) {
-        std::cout << "Performance Time: " << performanceTime << " ms" << std::endl;
+        std::cout << "\nPerformance Time: " << performanceTime << " ms" << std::endl;
     }
     else {
         std::cout << "An error occurred during performance measurement." << std::endl;

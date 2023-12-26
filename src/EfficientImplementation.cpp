@@ -61,7 +61,7 @@ bool DominoLine::addDomino() {
     std::string rightValue = line.back().rightSide;
 
     // Debug output with matched values.
-    std::cout << "Seeking a suitable pairing for both Left: " << leftValue << " and Right: " << rightValue << std::endl;  // Debug print
+    std::cout << "Finding a suitable pairing for both Left: " << leftValue << " and Right: " << rightValue << std::endl;  // Debug print
 
     // Check and add to the left if a matching domino is found
     auto itLeft = availableDominoes.find(leftValue);

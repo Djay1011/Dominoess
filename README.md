@@ -18,3 +18,6 @@ Implementing Recursive Data Structures: Designing and developing data structures
 Evaluating Recursion Suitability: Critically assessing scenarios where recursion is beneficial versus iterative solutions, considering factors like stack depth, problem size, and readability.
 
 Postulating and Testing Performance Hypotheses: Formulating hypotheses related to software performance and conducting systematic tests to validate or refute these conjectures, thereby fostering a data-driven approach to software optimization.
+
+
+note any money made i must get my share
